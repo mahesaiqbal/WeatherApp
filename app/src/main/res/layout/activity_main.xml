@@ -1,18 +1,128 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/lay_current_weather_forecast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="55dp"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:paddingStart="32dp"
+                    android:paddingEnd="32dp"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp"
+                    tools:text="Area" />
+
+                <TextView
+                    android:id="@+id/tv_datetime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:paddingStart="32dp"
+                    android:paddingEnd="32dp"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    tools:text="Senin, 1 Januari 2020" />
+
+                <TextView
+                    android:id="@+id/tv_celcius"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="36dp"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:paddingStart="32dp"
+                    android:paddingEnd="32dp"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="96sp"
+                    tools:text="20*" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginBottom="50dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="32dp"
+                    android:paddingEnd="32dp">
+
+                    <ImageView
+                        android:id="@+id/img_weather_condition"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/ic_launcher_foreground" />
+
+                    <TextView
+                        android:id="@+id/tv_weather_condition"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        tools:text="Berawan" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_weather_forecast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lay_current_weather_forecast"
+                tools:listitem="@layout/item_weather_forecast" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>
