@@ -50,8 +50,10 @@ ext {
     idleResourceVersion = '3.2.0'
     rxJavaVersion = '2.2.8'
     rxAndroidVersion = '2.1.1'
-    retrofitVersion = '2.5.0'
+    retrofitVersion = '2.6.0'
     okHttp3Version = '3.12.1'
     mockitoKotlinVersion = '2.1.0'
     coroutinesVersion = '1.1.1'
+    coroutinesAdapterVersion = '0.9.2'
+    daggerVersion = '2.23.2'
 }
