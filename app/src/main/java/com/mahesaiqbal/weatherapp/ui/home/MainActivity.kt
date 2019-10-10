@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.mahesaiqbal.weatherapp.R
 import com.mahesaiqbal.weatherapp.data.source.local.entity.WeatherEntity
+import com.mahesaiqbal.weatherapp.utils.dateFormat
 import com.mahesaiqbal.weatherapp.viewmodel.ViewModelFactory
 import com.mahesaiqbal.weatherapp.vo.Resource
 import com.mahesaiqbal.weatherapp.vo.Status.*
@@ -69,17 +70,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun populateListView(mainAdapter: MainAdapter) {
-        rv_weather_forecast.apply {
-            layoutManager = LinearLayoutManager(context)
-            setHasFixedSize(true)
-            adapter = mainAdapter
-        }
-    }
-
     private fun populateMainView(data: List<WeatherEntity>) {
         tv_area.text = data[0].cityName
-        tv_datetime.text = data[0].datetime
+        tv_datetime.text = data[0].datetime.toString()
         tv_celcius.text = "${data[0].tempDay}°"
         tv_weather_condition.text = data[0].weatherMain
 

@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.mahesaiqbal.weatherapp.R
 import com.mahesaiqbal.weatherapp.data.source.local.entity.WeatherEntity
 import com.mahesaiqbal.weatherapp.ui.home.MainAdapter.MainViewHolder
+import com.mahesaiqbal.weatherapp.utils.dateFormat
 import kotlinx.android.synthetic.main.item_weather_forecast.view.*
 
 class MainAdapter(var activity: Activity, var dailyForecast: List<WeatherEntity>) : Adapter<MainViewHolder>() {
@@ -26,7 +27,7 @@ class MainAdapter(var activity: Activity, var dailyForecast: List<WeatherEntity>
     inner class MainViewHolder(itemView: View) : ViewHolder(itemView) {
 
         fun bindItem(weather: WeatherEntity) {
-            itemView.tv_day.text = weather.datetime
+            itemView.tv_day.text = weather.datetime.toString()
             itemView.tv_weather_condition.text = "${weather.tempDay}°"
 
             Glide.with(activity)

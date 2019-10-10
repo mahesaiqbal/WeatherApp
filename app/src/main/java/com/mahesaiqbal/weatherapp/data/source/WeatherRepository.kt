@@ -60,7 +60,7 @@ class WeatherRepository(
                     val forecast = WeatherEntity(
                         0,
                         data.city.name,
-                        dateFormat(response.dt)!!,
+                        response.dt,
                         response.temp.day,
                         response.weather[0].main,
                         response.weather[0].icon

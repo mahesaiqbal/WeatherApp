@@ -12,7 +12,7 @@ data class WeatherEntity(
     @ColumnInfo(name = "city_name")
     var cityName: String,
     @ColumnInfo(name = "datetime")
-    var datetime: String,
+    var datetime: Int,
     @ColumnInfo(name = "temp_day")
     var tempDay: Double,
     @ColumnInfo(name = "weather_main")
