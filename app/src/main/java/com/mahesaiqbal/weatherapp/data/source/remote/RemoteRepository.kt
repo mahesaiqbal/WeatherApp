@@ -4,10 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.mahesaiqbal.weatherapp.data.source.remote.response.DailyForecastResponse
 import com.mahesaiqbal.weatherapp.network.Client
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.async
+import io.reactivex.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 
 class RemoteRepository {
 
@@ -23,23 +24,39 @@ class RemoteRepository {
     }
 
     private val apiService = Client.create()
+    private val compositeDisposable = CompositeDisposable()
 
     val API_KEY = "dd522c8235e5b956c6637e8a72a46189"
 
-    private val job = SupervisorJob()
-
-    private val coroutineContext = Dispatchers.IO + job
-
     fun getDailyForecast(): LiveData<ApiResponse<DailyForecastResponse>> {
 
-        val resultPopularMovie: MutableLiveData<ApiResponse<DailyForecastResponse>> = MutableLiveData()
+        val result: MutableLiveData<ApiResponse<DailyForecastResponse>> = MutableLiveData()
 
-        GlobalScope.async(coroutineContext) {
-            val response = apiService.getDailyForecast("Jakarta,ID", "metric", API_KEY)
+        apiService.getDailyForecast("Jakarta,ID", "metric", API_KEY)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<DailyForecastResponse> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-            resultPopularMovie.postValue(ApiResponse.success(response))
-        }
+                override fun onNext(t: DailyForecastResponse) {
+                    result.postValue(ApiResponse.success(t))
+                }
 
-        return resultPopularMovie
+                override fun onError(e: Throwable) {
+                    e.printStackTrace()
+                }
+
+                override fun onComplete() {
+
+                }
+            })
+
+        return result
+    }
+
+    fun onDestroy() {
+        compositeDisposable.clear()
     }
 }

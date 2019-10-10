@@ -8,6 +8,7 @@ import com.mahesaiqbal.weatherapp.data.source.remote.RemoteRepository
 import com.mahesaiqbal.weatherapp.data.source.remote.response.DailyForecastResponse
 import com.mahesaiqbal.weatherapp.data.source.remote.response.X
 import com.mahesaiqbal.weatherapp.utils.AppExecutors
+import com.mahesaiqbal.weatherapp.utils.dateFormat
 import com.mahesaiqbal.weatherapp.vo.Resource
 
 class WeatherRepository(
@@ -36,41 +37,6 @@ class WeatherRepository(
         }
     }
 
-    override fun getAllPopularMovies(): LiveData<Resource<PagedList<PopularMovieEntity>>> {
-        return object : NetworkBoundResource<PagedList<PopularMovieEntity>, MutableList<ResultPopularMovie>>(appExecutors) {
-            override fun loadFromDB(): LiveData<PagedList<PopularMovieEntity>> {
-                return LivePagedListBuilder(localRepository.getAllPopularMovie(), 10).build()
-            }
-
-            override fun shouldFetch(data: PagedList<PopularMovieEntity>): Boolean {
-                return data == null || data.size == 0
-            }
-
-            override fun createCall(): LiveData<ApiResponse<MutableList<ResultPopularMovie>>>? {
-                return remoteRepository.getAllPopularMovie()
-            }
-
-            override fun saveCallResult(data: MutableList<ResultPopularMovie>?) {
-                val popularMovies = mutableListOf<PopularMovieEntity>()
-
-                for (i in data!!.indices) {
-                    val response: ResultPopularMovie = data[i]
-                    val (id, backdropPath, originalLanguage,
-                        overview, popularity, posterPath,
-                        releaseDate, title, voteAverage,
-                        voteCount) = response
-                    val popularMovie = PopularMovieEntity(id, backdropPath, originalLanguage,
-                        overview, popularity, posterPath, releaseDate, title, voteAverage,
-                        voteCount, false)
-
-                    popularMovies.add(popularMovie)
-                }
-
-                localRepository.insertPopularMovie(popularMovies)
-            }
-        }.asLiveData()
-    }
-
     override fun getDailyForecast(): LiveData<Resource<List<WeatherEntity>>> {
         return object : NetworkBoundResource<List<WeatherEntity>, DailyForecastResponse>(appExecutors) {
             override fun loadFromDB(): LiveData<List<WeatherEntity>> {
@@ -86,15 +52,21 @@ class WeatherRepository(
             }
 
             override fun saveCallResult(data: DailyForecastResponse?) {
-                val dailyForecast = listOf<WeatherEntity>()
+                val dailyForecast = arrayListOf<WeatherEntity>()
 
-                for (i in data!!.list) {
-                    val response: X = data.list
+                for (i in data!!.list.indices) {
 
-                    //Define destructuring declarations
+                    val response: X = data.list[i]
+                    val forecast = WeatherEntity(
+                        0,
+                        data.city.name,
+                        dateFormat(response.dt)!!,
+                        response.temp.day,
+                        response.weather[0].main,
+                        response.weather[0].icon
+                    )
 
-
-                    popularMovies.add(popularMovie)
+                    dailyForecast.add(forecast)
                 }
 
                 localRepository.insertDailyForecast(dailyForecast)

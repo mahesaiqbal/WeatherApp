@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ui.home.MainActivity">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
@@ -81,8 +81,7 @@
                     <ImageView
                         android:id="@+id/img_weather_condition"
                         android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:src="@drawable/ic_launcher_foreground" />
+                        android:layout_height="35dp" />
 
                     <TextView
                         android:id="@+id/tv_weather_condition"
