@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.mahesaiqbal.weatherapp.R
 import com.mahesaiqbal.weatherapp.data.source.local.entity.WeatherEntity
 import com.mahesaiqbal.weatherapp.utils.dateFormat
+import com.mahesaiqbal.weatherapp.utils.timeStampToDate
 import com.mahesaiqbal.weatherapp.viewmodel.ViewModelFactory
 import com.mahesaiqbal.weatherapp.vo.Resource
 import com.mahesaiqbal.weatherapp.vo.Status.*
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var weatherAdapter: MainAdapter
     lateinit var viewModel: MainViewModel
 
-    var dailyForecast: List<WeatherEntity> = arrayListOf()
+    var dailyForecast: ArrayList<WeatherEntity> = arrayListOf()
 
     companion object {
         fun obtainViewModel(activity: AppCompatActivity): MainViewModel {
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                 SUCCESS -> {
                     progress_bar.visibility = View.GONE
 
-                    weatherAdapter = MainAdapter(this, resultMovie.data!!)
+                    weatherAdapter = MainAdapter(this, costumizeWeatherData(resultMovie.data!!))
 
                     populateMainView(resultMovie.data)
 
@@ -70,9 +71,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun costumizeWeatherData(data: List<WeatherEntity>): ArrayList<WeatherEntity> {
+        val costumizeData: ArrayList<WeatherEntity> = arrayListOf()
+
+        for (i in data.indices) {
+            if (i == 0) {
+                continue
+            }
+
+            costumizeData.add(data[i])
+        }
+
+        return costumizeData
+    }
+
     private fun populateMainView(data: List<WeatherEntity>) {
         tv_area.text = data[0].cityName
-        tv_datetime.text = data[0].datetime.toString()
+        tv_datetime.text = timeStampToDate(data[0].datetime)
         tv_celcius.text = "${data[0].tempDay}°"
         tv_weather_condition.text = data[0].weatherMain
 

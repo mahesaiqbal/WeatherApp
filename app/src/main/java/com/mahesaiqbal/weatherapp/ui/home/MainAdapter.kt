@@ -11,9 +11,10 @@ import com.mahesaiqbal.weatherapp.R
 import com.mahesaiqbal.weatherapp.data.source.local.entity.WeatherEntity
 import com.mahesaiqbal.weatherapp.ui.home.MainAdapter.MainViewHolder
 import com.mahesaiqbal.weatherapp.utils.dateFormat
+import com.mahesaiqbal.weatherapp.utils.timeStampToDate
 import kotlinx.android.synthetic.main.item_weather_forecast.view.*
 
-class MainAdapter(var activity: Activity, var dailyForecast: List<WeatherEntity>) : Adapter<MainViewHolder>() {
+class MainAdapter(var activity: Activity, var dailyForecast: ArrayList<WeatherEntity>) : Adapter<MainViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder
             = MainViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_weather_forecast, parent, false))
@@ -27,7 +28,7 @@ class MainAdapter(var activity: Activity, var dailyForecast: List<WeatherEntity>
     inner class MainViewHolder(itemView: View) : ViewHolder(itemView) {
 
         fun bindItem(weather: WeatherEntity) {
-            itemView.tv_day.text = weather.datetime.toString()
+            itemView.tv_day.text = timeStampToDate(weather.datetime)
             itemView.tv_weather_condition.text = "${weather.tempDay}°"
 
             Glide.with(activity)

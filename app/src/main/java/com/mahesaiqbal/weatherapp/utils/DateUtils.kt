@@ -13,3 +13,9 @@ fun dateFormat(timeStamp: Int): String? {
         return e.toString()
     }
 }
+
+fun timeStampToDate(timeStamp: Int): String {
+    val sdf = SimpleDateFormat("EEEE, dd MMM yyyy")
+    val date = Date(timeStamp.toLong() * 1000)
+    return sdf.format(date)
+}
